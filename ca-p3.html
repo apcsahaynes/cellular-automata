@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cellular Automata — Page 3</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+  <script>
+    hljs.highlightAll();
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var code = btn.closest('.code-block').querySelector('code').innerText;
+          navigator.clipboard.writeText(code).then(function() {
+            btn.textContent = 'copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1800);
+          });
+        });
+      });
+    });
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f3ef; --text: #1c1c1a; --muted: #6a6760; --border: #d0cdc5;
+      --green-bg: #eef5ec; --green-border: #3d8b3d; --green-text: #1e4d1e;
+      --exam-bg: #f0edf8; --exam-border: #6a4fb5; --exam-text: #3d2a7a;
+      --code-bg: #e6e4de; --accent: #2d6a2d;
+      --further-bg: #eef2fa; --further-border: #3a5fa0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 16.5px; line-height: 1.72; color: var(--text); background: var(--bg); padding: 0 1rem; }
+    .page { max-width: 740px; margin: 0 auto; padding: 3rem 0; }
+    .lab-header { border-bottom: 2px solid var(--text); padding-bottom: 0.9rem; margin-bottom: 2rem; }
+    .lab-header h1 { font-size: 1.5rem; font-weight: 600; line-height: 1.25; margin-bottom: 0.25rem; }
+    .lab-header .page-indicator { font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .intro-box { background: var(--green-bg); border-left: 4px solid var(--green-border); padding: 0.9rem 1.2rem; margin-bottom: 1.8rem; font-size: 0.95rem; }
+    .intro-box p + p { margin-top: 0.4rem; }
+    p { margin-bottom: 1rem; }
+    .exercises { margin: 1.4rem 0; }
+    .exercise { display: flex; gap: 1rem; margin-bottom: 1.6rem; align-items: flex-start; }
+    .exercise-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.92rem; font-weight: 600; color: var(--accent); min-width: 1.6rem; padding-top: 0.1rem; flex-shrink: 0; }
+    .exercise-body { flex: 1; }
+    .exercise-body > *:last-child { margin-bottom: 0; }
+    .code-block { position: relative; margin: 0.75rem 0; }
+    .code-block pre { margin: 0; border-radius: 4px; font-size: 0.875rem; border: 1px solid var(--border); }
+    .copy-btn { position: absolute; top: 0.45rem; right: 0.5rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: var(--muted); background: var(--code-bg); border: 1px solid var(--border); border-radius: 3px; padding: 0.18rem 0.55rem; cursor: pointer; transition: color 0.15s, background 0.15s; line-height: 1.6; }
+    .copy-btn:hover { color: var(--text); background: var(--border); }
+    .copy-btn.copied { color: var(--green-text); border-color: var(--green-border); }
+    pre { margin: 0.75rem 0; border-radius: 4px; font-size: 0.875rem; border: 1px solid var(--border); }
+    pre code { font-family: 'IBM Plex Mono', monospace !important; }
+    code { font-family: 'IBM Plex Mono', monospace; font-size: 0.875em; background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 2px; }
+    pre code { background: none !important; padding: 0 !important; }
+    .on-exam { background: var(--exam-bg); border: 1.5px solid var(--exam-border); border-radius: 4px; padding: 0.85rem 1.1rem; margin: 1.3rem 0; font-size: 0.93rem; }
+    .on-exam-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: var(--exam-text); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.45rem; }
+    .on-exam pre { border-color: #c4b8e8; margin-bottom: 0; }
+    .on-exam > *:last-child { margin-bottom: 0; }
+    details { margin: 0.75rem 0; border: 1px solid var(--border); border-radius: 3px; }
+    summary { padding: 0.5rem 1rem; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--accent); font-weight: 600; user-select: none; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: '▶  '; font-size: 0.7rem; }
+    details[open] summary::before { content: '▼  '; }
+    details[open] { border-color: var(--green-border); }
+    .hint-body { padding: 0.8rem 1rem; border-top: 1px solid var(--border); font-size: 0.93rem; }
+    .hint-body > *:last-child { margin-bottom: 0; }
+    .partner { display: inline-flex; align-items: center; gap: 0.35rem; background: #e4ede4; border: 1px solid var(--green-border); border-radius: 20px; padding: 0.12rem 0.72rem 0.12rem 0.5rem; font-size: 0.79rem; font-family: 'IBM Plex Mono', monospace; color: var(--accent); font-weight: 600; margin-right: 0.3rem; vertical-align: middle; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+    .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.5rem; }
+    .take-further { background: var(--further-bg); border-left: 4px solid var(--further-border); padding: 0.9rem 1.2rem; margin: 2rem 0 0; font-size: 0.95rem; }
+    .take-further-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: #1a3d6e; text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.5rem; }
+    .take-further a { color: #1a3d6e; }
+    .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--border); }
+    .nav-page { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--muted); }
+    .nav-btn { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 0.86rem; font-weight: 600; color: white; background: var(--accent); padding: 0.45rem 1.15rem; border-radius: 3px; text-decoration: none; transition: background 0.15s; }
+    .nav-btn:hover { background: #1e4d1e; }
+    .nav-btn.back { background: #888; }
+    .nav-btn.back:hover { background: #555; }
+    em { font-style: italic; }
+    strong { font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="lab-header">
+    <h1>Cellular Automata</h1>
+    <div class="page-indicator">Page 3 — Images as 2D Grids</div>
+  </div>
+
+  <div class="intro-box">
+    <p><strong>On this page,</strong> you'll manipulate pixels in a photograph. An image is a rectangular grid of pixels — each one at a specific row and column — and working with it introduces the same structure you'll use for 2D arrays on the next page.</p>
+    
+  </div>
+
+  <p>A digital image is a rectangular grid of pixels. Each pixel sits at a column (x) and a row (y), and holds a color. In Processing, images are objects created from the PImage class. They don't have a traditional constructor. You load and display one like this:</p>
+
+  <div class="code-block">
+    <button class="copy-btn">copy</button>
+    <pre><code class="language-java">PImage img; //creates an image object
+
+void setup() {
+    size(800, 834); // size of image
+    img = loadImage("pillars.jpg"); //sets the image to a file in your sketch folder
+    image(img, 0, 0);  // draw starting at the top-left corner
+}</code></pre>
+  </div>
+
+  <p>Open a new sketch and download the <a href="pillars.jpg" target="_blank">Hubble "Pillars of Creation"</a> Save it as <code>pillars.jpg</code> and drag it into the the Processing app.</p>
+
+  <p>Copy the code and run it. You should see the image.
+    <strong>Note:</strong> you may get an warning about pixel density. You can ignore it.
+  </p>
+
+  <hr class="divider">
+
+  <p><code>img.get(x, y)</code> returns the color at column <code>x</code>, row <code>y</code>. <code>img.set(x, y, c)</code> writes a color there. Colors are stored as integers; <code>red(c)</code>, <code>green(c)</code>, and <code>blue(c)</code> extract each channel as a value from 0 to 255. <code>color(r, g, b)</code> builds a new color.</p>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">1.</div>
+      <div class="exercise-body">
+        <p>Add this after loading the image. Try several different coordinates across the image. Where do you find high red values? Where is blue dominant? What does a pixel with nearly equal R, G, B values look like?</p>
+        <div class="code-block">
+          <button class="copy-btn">copy</button>
+          <pre><code class="language-java">color c = img.get(400, 300);
+println(red(c), green(c), blue(c));</code></pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <p>To process every pixel, you'll need to iterate over every row and column. The image has <code>img.height</code> rows and <code>img.width</code> columns.</p> 
+
+  <p>The code will be similar to what you did in Breakout: nested for loops. The outer loop steps through rows from top to bottom. The inner loop moves across each row one column at a time.</p>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">2.</div>
+      <div class="exercise-body">
+        <p>Using nested for loops, and a variable called <code>counter</code>, count the number of pixels in the image. Compare it to the size of canvas to confirm your count.</p>
+        
+      </div>
+    </div>
+
+  </div>
+
+  <p>Let's manipulate the image now. You'll use <code>img.set(x, y, c)</code> to change the color of a pixel.</p>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">3.</div>
+      <div class="exercise-body">
+        <p class="section-label">Grayscale</p>
+        <p>Create a <code>float</code> called <code>avg</code> that stores the average value of the red, green, and blue values and then sets each color value to the average.</p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">Calcuate the average of the three values: <code>float avg = (red(c) + green(c) + blue(c)) / 3.0;</code> then update the pixel: <code>img.set(x, y, color(avg, avg, avg));</code></div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">4.</div>
+      <div class="exercise-body">
+        <p class="section-label">Brightness</p>
+        <p>Multiply each red, blue, and green value by a <code>factor</code>. Use <code>constrain(value, 0, 255)</code> to keep values in range. Try 1.5 and 2.0. What happens at very high factors?</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">5.</div>
+      <div class="exercise-body">
+        <p class="section-label">Channel isolation</p>
+        <p><span class="partner">👥 Talk with your partner</span> Keep only one channel and set the other two to 0. Try each channel. Which one preserves the most detail about the image's structure?</p>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <p>The filters above treat each pixel independently; neighboring pixels are not dependent on each other. A blur is different: each pixel's new color is an average of itself and its neighbors. This creates the same problem as the cellular automata. Uou can't read and write at the same time. Reading a pixel after it's been updated gives you the new value, not the original.</p>
+
+  <p>The fix is to read from one image and write to a separate copy.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">copy</button>
+    <pre><code class="language-java">PImage img;
+PImage img;
+PImage blurred;
+
+void setup() {
+    size(800, 834);
+    img = loadImage("pillars.jpg");
+    blurred = createImage(img.width, img.height, RGB); //creates an empty image
+}
+
+void draw(){
+  image(img, 0, 0);
+}
+
+// reads from source, writes the blurred result into destination
+void blur(PImage source, PImage destination) {
+    // your code here
+}
+
+
+void keyPressed() {
+    blur(img, blurred);  // compute next state
+    img = blurred.copy(); // make blurred the new current image
+}</code></pre>
+  </div>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">6.</div>
+      <div class="exercise-body">
+        <p>Update your sketch to match the above code. Complete <code>blur</code>: Loop over every pixel, skipping the outer border. For each pixel, average it with its four direct neighbors (above, below, left, right) and write the result to <code>destination</code>. Average each channel separately.</p>
+        <details>
+          <summary>Hint: why skip the border?</summary>
+          <div class="hint-body">Similar to the cellular automata, if we don't ignore the edges, we'll access indexes that are out of bounds. The same idea applies, but we need to skip the edges in both dimensions.</div>
+        </details>
+        <details>
+          <summary>Hint: averaging the channels</summary>
+          <div class="hint-body">
+            <p>Again, similar to the cellular automata, we want to access the neighbors in relation to the current pixel's (x, y) location. We. You'll need to get and store five colors: center, above, below, left, right. Then:</p>
+            <pre><code class="language-java">float avgR = (red(center) + red(above) + red(below) + red(left) + red(right)) / 5.0;</code></pre>
+            <p style="margin-top:0.5rem;">Do the same for green and blue. Write <code>color(avgR, avgG, avgB)</code> to <code>destination.set(x, y, ...)</code>.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">7.</div>
+      <div class="exercise-body">
+        <p>Run the sketch and press a key repeatedly. What does the image look like after 5 passes? 20 passes? What does repeated blurring converge toward?</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">8.</div>
+      <div class="exercise-body">
+        <p><span class="partner">👥 Talk with your partner</span> Why does the blur need two images? What would go wrong if you read and wrote the same image at the same time?</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="on-exam">
+    <div class="on-exam-label">On the Exam</div>
+    <p>The standard pattern for visiting every element of a 2D structure:</p>
+    <pre><code class="language-java">for (int r = 0; r &lt; rows; r++) {
+    for (int c = 0; c &lt; cols; c++) {
+        // use element at row r, column c
+    }
+}</code></pre>
+    <p style="margin-top:0.6rem;">The outer loop controls which row. The inner loop moves across that row one column at a time. For images, rows are y values (top to bottom) and columns are x values (left to right).</p>
+  </div>
+
+  <div class="take-further">
+    <div class="take-further-label">Take it further</div>
+    <p>These tutorials use the same pixel manipulation techniques. Play around with them:</p>
+    <ul style="margin:0.6rem 0 0 1.2rem;line-height:1.9;">
+      <li><a href="https://happycoding.io/tutorials/processing/images/mars-perseverance-image-colorizer" target="_blank">Mars Perseverance image colorizer</a></li>
+      <li><a href="https://happycoding.io/tutorials/processing/images/pixel-spinner" target="_blank">Pixel spinner</a></li>
+    </ul>
+      <p>Experiment with the color values and create a new image effect.</p>
+  </div>
+
+  <div class="nav">
+    <a class="nav-btn back" href="ca-p2.html">← Page 2</a>
+    <span class="nav-page">Page 3</span>
+    <a class="nav-btn" href="ca-p4.html">Page 4 →</a>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cellular Automata — Page 1</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+  <script>
+    hljs.highlightAll();
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var code = btn.closest('.code-block').querySelector('code').innerText;
+          navigator.clipboard.writeText(code).then(function() {
+            btn.textContent = 'copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1800);
+          });
+        });
+      });
+    });
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f3ef;
+      --text: #1c1c1a;
+      --muted: #6a6760;
+      --border: #d0cdc5;
+      --green-bg: #eef5ec;
+      --green-border: #3d8b3d;
+      --green-text: #1e4d1e;
+      --exam-bg: #f0edf8;
+      --exam-border: #6a4fb5;
+      --exam-text: #3d2a7a;
+      --code-bg: #e6e4de;
+      --accent: #2d6a2d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
+      font-size: 16.5px;
+      line-height: 1.72;
+      color: var(--text);
+      background: var(--bg);
+      padding: 0 1rem;
+    }
+
+    .page { max-width: 740px; margin: 0 auto; padding: 3rem 0; }
+
+    .lab-header { border-bottom: 2px solid var(--text); padding-bottom: 0.9rem; margin-bottom: 2rem; }
+    .lab-header h1 { font-size: 1.5rem; font-weight: 600; line-height: 1.25; margin-bottom: 0.25rem; }
+    .lab-header .page-indicator { font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 600; color: var(--text); }
+
+    .intro-box { background: var(--green-bg); border-left: 4px solid var(--green-border); padding: 0.9rem 1.2rem; margin-bottom: 1.8rem; font-size: 0.95rem; }
+    .intro-box p + p { margin-top: 0.4rem; }
+
+    p { margin-bottom: 1rem; }
+
+    .exercises { margin: 1.4rem 0; }
+    .exercise { display: flex; gap: 1rem; margin-bottom: 1.6rem; align-items: flex-start; }
+    .exercise-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.92rem; font-weight: 600; color: var(--accent); min-width: 1.6rem; padding-top: 0.1rem; flex-shrink: 0; }
+    .exercise-body { flex: 1; }
+    .exercise-body > *:last-child { margin-bottom: 0; }
+
+    .code-block { position: relative; margin: 0.75rem 0; }
+    .code-block pre { margin: 0; border-radius: 4px; font-size: 0.875rem; border: 1px solid var(--border); }
+    .copy-btn { position: absolute; top: 0.45rem; right: 0.5rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: var(--muted); background: var(--code-bg); border: 1px solid var(--border); border-radius: 3px; padding: 0.18rem 0.55rem; cursor: pointer; transition: color 0.15s, background 0.15s; line-height: 1.6; }
+    .copy-btn:hover { color: var(--text); background: var(--border); }
+    .copy-btn.copied { color: var(--green-text); border-color: var(--green-border); }
+
+    pre { margin: 0.75rem 0; border-radius: 4px; font-size: 0.875rem; border: 1px solid var(--border); }
+    pre code { font-family: 'IBM Plex Mono', monospace !important; }
+    code { font-family: 'IBM Plex Mono', monospace; font-size: 0.875em; background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 2px; }
+    pre code { background: none !important; padding: 0 !important; }
+
+    .on-exam { background: var(--exam-bg); border: 1.5px solid var(--exam-border); border-radius: 4px; padding: 0.85rem 1.1rem; margin: 1.3rem 0; font-size: 0.93rem; }
+    .on-exam-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: var(--exam-text); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.45rem; }
+    .on-exam pre { border-color: #c4b8e8; margin-bottom: 0; }
+    .on-exam > *:last-child { margin-bottom: 0; }
+
+    details { margin: 0.75rem 0; border: 1px solid var(--border); border-radius: 3px; }
+    summary { padding: 0.5rem 1rem; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--accent); font-weight: 600; user-select: none; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: '▶  '; font-size: 0.7rem; }
+    details[open] summary::before { content: '▼  '; }
+    details[open] { border-color: var(--green-border); }
+    .hint-body { padding: 0.8rem 1rem; border-top: 1px solid var(--border); font-size: 0.93rem; }
+    .hint-body > *:last-child { margin-bottom: 0; }
+
+    .partner { display: inline-flex; align-items: center; gap: 0.35rem; background: #e4ede4; border: 1px solid var(--green-border); border-radius: 20px; padding: 0.12rem 0.72rem 0.12rem 0.5rem; font-size: 0.79rem; font-family: 'IBM Plex Mono', monospace; color: var(--accent); font-weight: 600; margin-right: 0.3rem; vertical-align: middle; }
+
+    .array-wrap { margin: 0.8rem 0; overflow-x: auto; }
+    .array-diagram { display: inline-flex; align-items: stretch; font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; }
+    .array-cell { border: 1.5px solid var(--text); border-right: none; min-width: 38px; text-align: center; padding: 0.3rem 0.45rem; background: #fff; }
+    .array-cell:last-child { border-right: 1.5px solid var(--text); }
+    .array-cell.hi { background: #dff0df; }
+    .array-labels { display: inline-flex; margin-top: 3px; }
+    .array-label-cell { min-width: 38px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--muted); }
+
+    .rule-table-wrap { overflow-x: auto; margin: 0.8rem 0; }
+    .rule-table { border-collapse: collapse; font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; }
+    .rule-table th { border: 1px solid var(--border); padding: 0.35rem 1.1rem; background: var(--code-bg); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); text-align: center; }
+    .rule-table td { border: 1px solid var(--border); padding: 0.3rem 1.1rem; text-align: center; vertical-align: middle; }
+
+    .cell-bit { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: middle; }
+    .cell-bit.on { background: #1c1c1a; }
+    .cell-bit.off { background: #e6e4de; border: 1px solid var(--border); }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+    .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--border); }
+    .nav-page { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--muted); }
+    .nav-btn { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 0.86rem; font-weight: 600; color: white; background: var(--accent); padding: 0.45rem 1.15rem; border-radius: 3px; text-decoration: none; transition: background 0.15s; }
+    .nav-btn:hover { background: #1e4d1e; }
+    .nav-btn.back { background: #888; }
+    .nav-btn.back:hover { background: #555; }
+
+    em { font-style: italic; }
+    strong { font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="lab-header">
+    <h1>Cellular Automata</h1>
+    <div class="page-indicator">Page 1 — Arrays and Rules</div>
+  </div>
+
+  <div class="intro-box">
+    <p><strong>In this lab,</strong> you'll use arrays to simulate a cellular automaton: a grid of cells that change state over time based on simple rules determined by the states of their immediate neighbors.</p>
+    <p><strong>On this page,</strong> you'll get comfortable with arrays and understand how a rule works by applying it by hand.</p>
+  </div>
+
+  <p>An array is a fixed-size sequence of values. Unlike ArrayList, arrays cannot change their size once they have been created. In Java, you declare one like this:</p>
+
+  <div class="code-block">
+    <button class="copy-btn">copy</button>
+    <pre><code class="language-java">int[] cells = {0, 0, 0, 1, 0, 0, 0};
+println(cells[3]);     // → 1
+println(cells.length); // → 7</code></pre>
+  </div>
+
+  <p>Picture it as a row of boxes, each at a numbered position:</p>
+
+  <div class="array-wrap">
+    <div class="array-diagram">
+      <div class="array-cell">0</div><div class="array-cell">0</div><div class="array-cell">0</div>
+      <div class="array-cell hi">1</div>
+      <div class="array-cell">0</div><div class="array-cell">0</div><div class="array-cell">0</div>
+    </div><br>
+    <div class="array-labels">
+      <div class="array-label-cell">0</div><div class="array-label-cell">1</div><div class="array-label-cell">2</div>
+      <div class="array-label-cell">3</div>
+      <div class="array-label-cell">4</div><div class="array-label-cell">5</div><div class="array-label-cell">6</div>
+    </div>
+  </div>
+
+  <p>Positions start at 0. The last valid position is <code>cells.length - 1</code>, which here is 6. Accessing <code>cells[7]</code> throws an <code>ArrayIndexOutOfBoundsException</code>.</p>
+
+  <div class="on-exam">
+    <div class="on-exam-label">On the Exam</div>
+    <p>The standard pattern for visiting every element of an array:</p>
+    <pre><code class="language-java">for (int i = 0; i &lt; arr.length; i++) {
+    // use arr[i]
+}</code></pre>
+    
+  </div>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">1.</div>
+      <div class="exercise-body">
+        <p>Given the array above: what does <code>cells[0]</code> return? What about <code>cells[cells.length - 1]</code>? What happens if you access <code>cells[7]</code>?</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">2.</div>
+      <div class="exercise-body">
+        <p>Open a new Processing sketch and paste this code:</p>
+        <div class="code-block">
+          <button class="copy-btn">copy</button>
+          <pre><code class="language-java">int[] cells = {0, 0, 0, 0, 0, 0, 0};
+
+void setup() {
+    // your loop goes here
+
+    println(cells);
+}</code></pre>
+        </div>
+        <p>Write a loop that sets every element at an even index to <code>1</code>, leaving odd indexes at <code>0</code>. Run it. The console should print <code>[1, 0, 1, 0, 1, 0, 1]</code>.</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">3.</div>
+      <div class="exercise-body">
+        <p>In your loop, <code>i</code> gives you the current position. If you wanted to access the element one position to the left of <code>i</code>, what would the expression be? Why can't you do this safely when <code>i</code> is <code>0</code>?</p>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <p>A <strong>cellular automaton</strong> is a set of cells, each either alive (<code>1</code>) or dead (<code>0</code>). At each step, every cell produces a new value based on itself and its two immediate neighbors. The cell being updated is called the <strong>center</strong>. The center together with its left and right neighbors are called the cell's <strong>neighborhood</strong>.</p>
+
+  <p>Since each of the three cells in a neighborhood is 0 or 1, there are exactly 8 possible neighborhoods. A <strong>rule</strong> is a table that says: given a neighborhood, what should the center cell's next value be?</p>
+
+  <p>There are many rules. Here is Rule 90. Each row of the table is one possible neighborhood, and the last column says what the center cell becomes in the next generation:</p>
+
+  <div class="rule-table-wrap">
+    <table class="rule-table">
+      <tr>
+        <th>left</th><th>center</th><th>right</th><th>next value</th>
+      </tr>
+      <tr><td><span class="cell-bit on"></span></td><td><span class="cell-bit on"></span></td><td><span class="cell-bit on"></span></td><td>0</td></tr>
+      <tr><td><span class="cell-bit on"></span></td><td><span class="cell-bit on"></span></td><td><span class="cell-bit off"></span></td><td>1</td></tr>
+      <tr><td><span class="cell-bit on"></span></td><td><span class="cell-bit off"></span></td><td><span class="cell-bit on"></span></td><td>0</td></tr>
+      <tr><td><span class="cell-bit on"></span></td><td><span class="cell-bit off"></span></td><td><span class="cell-bit off"></span></td><td>1</td></tr>
+      <tr><td><span class="cell-bit off"></span></td><td><span class="cell-bit on"></span></td><td><span class="cell-bit on"></span></td><td>1</td></tr>
+      <tr><td><span class="cell-bit off"></span></td><td><span class="cell-bit on"></span></td><td><span class="cell-bit off"></span></td><td>0</td></tr>
+      <tr><td><span class="cell-bit off"></span></td><td><span class="cell-bit off"></span></td><td><span class="cell-bit on"></span></td><td>1</td></tr>
+      <tr><td><span class="cell-bit off"></span></td><td><span class="cell-bit off"></span></td><td><span class="cell-bit off"></span></td><td>0</td></tr>
+    </table>
+  </div>
+
+  <p>To figure out a cell's next value, find the row that matches its neighborhood and read the output.</p>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">4.</div>
+      <div class="exercise-body">
+        <p>Generation 0 below starts with one live cell in the middle. Apply Rule 90 to fill in the next five generations. Click any non-edge cell to toggle it. The edge cells (dimmed) stay at 0, so skip them when applying the rule.</p>
+
+        <div style="margin: 1rem 0;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:4px;">generation 0 (given)</div>
+          <div id="row0" style="display:flex;gap:3px;margin-bottom:2px;"></div>
+          <div id="idx-row" style="display:flex;gap:3px;margin-bottom:8px;"></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:4px;">generation 1</div>
+          <div id="row1" style="display:flex;gap:3px;margin-bottom:8px;"></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:4px;">generation 2</div>
+          <div id="row2" style="display:flex;gap:3px;margin-bottom:8px;"></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:4px;">generation 3</div>
+          <div id="row3" style="display:flex;gap:3px;margin-bottom:8px;"></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:4px;">generation 4</div>
+          <div id="row4" style="display:flex;gap:3px;margin-bottom:8px;"></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:4px;">generation 5</div>
+          <div id="row5" style="display:flex;gap:3px;margin-bottom:10px;"></div>
+          <button id="reset-btn" style="font-family:'IBM Plex Mono',monospace;font-size:0.78rem;font-weight:600;background:none;border:1px solid var(--border);border-radius:3px;padding:0.3rem 0.8rem;color:var(--muted);cursor:pointer;">reset</button>
+        </div>
+
+        <script>
+        (function() {
+          var N = 13;
+          var SIZE = 24;
+
+          function makeData() { return Array(N).fill(0); }
+
+          var rows = [makeData(), makeData(), makeData(), makeData(), makeData(), makeData()];
+          rows[0][Math.floor(N/2)] = 1;
+
+          function renderIndexRow() {
+            var el = document.getElementById('idx-row');
+            el.innerHTML = '';
+            for (var i = 0; i < N; i++) {
+              var div = document.createElement('div');
+              div.style.cssText = 'width:'+SIZE+'px;text-align:center;font-family:IBM Plex Mono,monospace;font-size:0.65rem;color:#6a6760;flex-shrink:0;';
+              div.textContent = i;
+              el.appendChild(div);
+            }
+          }
+
+          function renderRow(id, data, editable) {
+            var el = document.getElementById(id);
+            el.innerHTML = '';
+            data.forEach(function(val, i) {
+              var edge = (i === 0 || i === N-1);
+              var div = document.createElement('div');
+              div.style.cssText = 'width:'+SIZE+'px;height:'+SIZE+'px;border-radius:3px;flex-shrink:0;box-sizing:border-box;';
+              div.style.background = val ? '#1c1c1a' : '#e6e4de';
+              if (!val) div.style.border = '1px solid #d0cdc5';
+              if (edge) div.style.opacity = '0.4';
+              if (editable && !edge) {
+                div.style.cursor = 'pointer';
+                div.addEventListener('click', function() {
+                  data[i] ^= 1;
+                  renderAll();
+                });
+              }
+              el.appendChild(div);
+            });
+          }
+
+          function renderAll() {
+            renderRow('row0', rows[0], false);
+            renderIndexRow();
+            renderRow('row1', rows[1], true);
+            renderRow('row2', rows[2], true);
+            renderRow('row3', rows[3], true);
+            renderRow('row4', rows[4], true);
+            renderRow('row5', rows[5], true);
+          }
+
+          document.getElementById('reset-btn').addEventListener('click', function() {
+            for (var r = 1; r < 6; r++) rows[r] = makeData();
+            renderAll();
+          });
+
+          renderAll();
+        })();
+        </script>
+
+        <details>
+          <summary>Hint: working through it</summary>
+          <div class="hint-body">
+            <p>For each non-edge cell, look at its left neighbor, itself, and its right neighbor. Find that row in the Rule 90 table and read the next value. Put that value in the same position in the next generation.</p>
+            <details style="margin-top:0.8rem;border:none;">
+              <summary>Show generation 1</summary>
+              <div class="hint-body" style="border-top:1px solid var(--border);margin-top:0.5rem;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:6px;">generation 1: two live cells, one on each side of center</div>
+                <div style="display:flex;gap:3px;">
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;opacity:0.4;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#1c1c1a;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#1c1c1a;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;"></div>
+                  <div style="width:24px;height:24px;border-radius:3px;background:#e6e4de;border:1px solid #d0cdc5;flex-shrink:0;opacity:0.4;"></div>
+                </div>
+                <p style="margin-top:0.6rem;font-size:0.9rem;margin-bottom:0;">Use this as the input to compute generation 2.</p>
+              </div>
+            </details>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">5.</div>
+      <div class="exercise-body">
+        <p><span class="partner">👥 Talk with your partner</span> What shape is forming? What do you think it will look like after many more generations on a much wider grid?</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav">
+    <span></span>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <span class="nav-page">Page 1</span>
+      <a class="nav-btn" href="ca-p2.html">Next page →</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

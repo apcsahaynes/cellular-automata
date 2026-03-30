@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cellular Automata — Page 5</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+  <script>
+    hljs.highlightAll();
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var code = btn.closest('.code-block').querySelector('code').innerText;
+          navigator.clipboard.writeText(code).then(function() {
+            btn.textContent = 'copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1800);
+          });
+        });
+      });
+    });
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f3ef; --text: #1c1c1a; --muted: #6a6760; --border: #d0cdc5;
+      --green-bg: #eef5ec; --green-border: #3d8b3d; --green-text: #1e4d1e;
+      --exam-bg: #f0edf8; --exam-border: #6a4fb5; --exam-text: #3d2a7a;
+      --code-bg: #e6e4de; --accent: #2d6a2d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 16.5px; line-height: 1.72; color: var(--text); background: var(--bg); padding: 0 1rem; }
+    .page { max-width: 740px; margin: 0 auto; padding: 3rem 0; }
+    .lab-header { border-bottom: 2px solid var(--text); padding-bottom: 0.9rem; margin-bottom: 2rem; }
+    .lab-header h1 { font-size: 1.5rem; font-weight: 600; line-height: 1.25; margin-bottom: 0.25rem; }
+    .lab-header .page-indicator { font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .intro-box { background: var(--green-bg); border-left: 4px solid var(--green-border); padding: 0.9rem 1.2rem; margin-bottom: 1.8rem; font-size: 0.95rem; }
+    .intro-box p + p { margin-top: 0.4rem; }
+    p { margin-bottom: 1rem; }
+    .exercises { margin: 1.4rem 0; }
+    .exercise { display: flex; gap: 1rem; margin-bottom: 1.6rem; align-items: flex-start; }
+    .exercise-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.92rem; font-weight: 600; color: var(--accent); min-width: 1.6rem; padding-top: 0.1rem; flex-shrink: 0; }
+    .exercise-body { flex: 1; }
+    .exercise-body > *:last-child { margin-bottom: 0; }
+    .code-block { position: relative; margin: 0.75rem 0; }
+    .code-block pre { margin: 0; border-radius: 4px; font-size: 0.875rem; border: 1px solid var(--border); }
+    .copy-btn { position: absolute; top: 0.45rem; right: 0.5rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: var(--muted); background: var(--code-bg); border: 1px solid var(--border); border-radius: 3px; padding: 0.18rem 0.55rem; cursor: pointer; transition: color 0.15s, background 0.15s; line-height: 1.6; }
+    .copy-btn:hover { color: var(--text); background: var(--border); }
+    .copy-btn.copied { color: var(--green-text); border-color: var(--green-border); }
+    pre { margin: 0.75rem 0; border-radius: 4px; font-size: 0.875rem; border: 1px solid var(--border); }
+    pre code { font-family: 'IBM Plex Mono', monospace !important; }
+    code { font-family: 'IBM Plex Mono', monospace; font-size: 0.875em; background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 2px; }
+    pre code { background: none !important; padding: 0 !important; }
+    .on-exam { background: var(--exam-bg); border: 1.5px solid var(--exam-border); border-radius: 4px; padding: 0.85rem 1.1rem; margin: 1.3rem 0; font-size: 0.93rem; }
+    .on-exam-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: var(--exam-text); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.45rem; }
+    .on-exam pre { border-color: #c4b8e8; margin-bottom: 0; }
+    .on-exam > *:last-child { margin-bottom: 0; }
+    details { margin: 0.75rem 0; border: 1px solid var(--border); border-radius: 3px; }
+    summary { padding: 0.5rem 1rem; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--accent); font-weight: 600; user-select: none; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: '▶  '; font-size: 0.7rem; }
+    details[open] summary::before { content: '▼  '; }
+    details[open] { border-color: var(--green-border); }
+    .hint-body { padding: 0.8rem 1rem; border-top: 1px solid var(--border); font-size: 0.93rem; }
+    .hint-body > *:last-child { margin-bottom: 0; }
+    .partner { display: inline-flex; align-items: center; gap: 0.35rem; background: #e4ede4; border: 1px solid var(--green-border); border-radius: 20px; padding: 0.12rem 0.72rem 0.12rem 0.5rem; font-size: 0.79rem; font-family: 'IBM Plex Mono', monospace; color: var(--accent); font-weight: 600; margin-right: 0.3rem; vertical-align: middle; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+    /* GoL rule table */
+    .gol-table { border-collapse: collapse; font-size: 0.88rem; margin: 0.8rem 0; width: 100%; }
+    .gol-table th { border: 1px solid var(--border); padding: 0.35rem 0.9rem; background: var(--code-bg); font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); text-align: left; }
+    .gol-table td { border: 1px solid var(--border); padding: 0.32rem 0.9rem; }
+    .gol-table td:first-child { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; white-space: nowrap; }
+    /* pattern cells */
+    .pattern-row { display: flex; gap: 3px; margin-bottom: 3px; }
+    .pattern-cell { width: 22px; height: 22px; border-radius: 2px; flex-shrink: 0; }
+    .pattern-cell.on { background: #1c1c1a; }
+    .pattern-cell.off { background: #e6e4de; border: 1px solid var(--border); }
+    .pattern-wrap { display: inline-block; margin: 0.6rem 1.5rem 0.6rem 0; vertical-align: top; }
+    .pattern-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
+    .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--border); }
+    .nav-page { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--muted); }
+    .nav-btn { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 0.86rem; font-weight: 600; color: white; background: var(--accent); padding: 0.45rem 1.15rem; border-radius: 3px; text-decoration: none; transition: background 0.15s; }
+    .nav-btn:hover { background: #1e4d1e; }
+    .nav-btn.back { background: #888; }
+    .nav-btn.back:hover { background: #555; }
+    em { font-style: italic; }
+    strong { font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="lab-header">
+    <h1>Cellular Automata</h1>
+    <div class="page-indicator">Page 5 — Game of Life</div>
+  </div>
+
+  <div class="intro-box">
+    <p><strong>On this page,</strong> you'll build on what you built on page 4 to implement Conway's Game of Life, the most well known cellular automata and one of the most famous examples of emergence in computing.</p>
+    <p><strong>Before you start:</strong> Read the <a href="https://conwaylife.com/wiki/Conway%27s_Game_of_Life" target="_blank">Conway Life Wiki introduction</a> to see what Game of Life looks like running and why it's interesting. Pay attention to what "stable," "oscillating," and "moving" patterns mean.</p>
+  </div>
+
+  <p>Game of Life is a 2D automaton where every cell is either alive (1) or dead (0), and four rules decide the next generation. All cells update simultaneously:</p>
+
+  <table class="gol-table">
+    <tr><th>condition</th><th>result</th></tr>
+    <tr><td>live cell, fewer than 2 live neighbors</td><td>dies (underpopulation)</td></tr>
+    <tr><td>live cell, 2 or 3 live neighbors</td><td>survives</td></tr>
+    <tr><td>live cell, more than 3 live neighbors</td><td>dies (overpopulation)</td></tr>
+    <tr><td>dead cell, exactly 3 live neighbors</td><td>becomes alive (reproduction)</td></tr>
+  </table>
+
+  <p>Every other case produces a dead cell. You can state the survival cases more compactly: a live cell survives with 2 or 3 neighbors; a dead cell is born with exactly 3.</p>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">1.</div>
+      <div class="exercise-body">
+        <p><span class="partner">👥 Talk with your partner</span> Apply the rules by hand to these two patterns. For each cell, count its live neighbors and decide what it becomes. Draw the next generation on paper.</p>
+        <div style="margin: 0.8rem 0;">
+          <div class="pattern-wrap">
+            <div class="pattern-label">blinker</div>
+            <div class="pattern-row"><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+            <div class="pattern-row"><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell on"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+            <div class="pattern-row"><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell on"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+            <div class="pattern-row"><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell on"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+            <div class="pattern-row"><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+          </div>
+          <div class="pattern-wrap">
+            <div class="pattern-label">glider</div>
+            <div class="pattern-row"><div class="pattern-cell off"></div><div class="pattern-cell on"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+            <div class="pattern-row"><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell on"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+            <div class="pattern-row"><div class="pattern-cell on"></div><div class="pattern-cell on"></div><div class="pattern-cell on"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+            <div class="pattern-row"><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+            <div class="pattern-row"><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div><div class="pattern-cell off"></div></div>
+          </div>
+        </div>
+        <details>
+          <summary>Hint: working through the blinker</summary>
+          <div class="hint-body">
+            <p>Consider two cells. First, the middle cell (row 2, col 2 if you start from 0). Its neighbors: above it is alive, below it is alive, left and right are dead, and all four diagonals are dead. That's 2 live neighbors, so it survives.</p>
+            <p style="margin-top:0.5rem;">Now take a dead cell at row 2, col 1 (just left of the middle). Its neighbors include the three blinker cells. Count them: that's 3 live neighbors, so it become alive.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+  </div>
+
+
+  
+
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">2.</div>
+      <div class="exercise-body">
+        <p>Now fill in <code>makeNextGrid()</code> from page 4. Use <code>countNeighbors()</code> inside to determine if each cell's next state.</p>
+
+  <p>Make sure you skip the outer border, which means all neighbor accesses are guaranteed in bounds. Edge cells are effectively always dead, which is fine for exploring patterns in the interior.</p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">
+            <p>Two conditions result in a live next cell. Write them as two separate <code>if</code> statements or combine them with <code>||</code>:</p>
+            <ul style="margin:0.5rem 0 0 1.2rem;line-height:1.8;">
+              <li>The cell is currently alive (<code>currentGrid[r][c] == 1</code>) and has 2 or 3 live neighbors</li>
+              <li>The cell is currently dead (<code>currentGrid[r][c] == 0</code>) and has exactly 3 live neighbors</li>
+            </ul>
+            <p style="margin-top:0.5rem;">Since <code>nextGrid</code> starts as all zeros, you only need to write a 1 when a cell should be alive.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">3.</div>
+      <div class="exercise-body">
+        <p>Run the sketch with a random starting grid. Describe what you see. Does the grid stabilize? How long does it roughly take?</p>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <p>With a random start, Game of Life quickly settles into a mix of stable structures, oscillators, and noise. To study specific patterns, it helps to draw them intentionally. Add the following to your sketch:</p>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">4.</div>
+      <div class="exercise-body">
+        <p>Add a boolean <code>paused</code>, toggled by the spacebar. When paused, the simulation freezes. Add a <code>mousePressed()</code> handler that toggles the cell under the cursor while paused.</p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">
+            <p>Convert mouse position to grid coordinates: <code>int r = mouseY / cellSize</code> and <code>int c = mouseX / cellSize</code>. Check that <code>r</code> and <code>c</code> are within the grid before accessing <code>cells[r][c]</code>.</p>
+            <p style="margin-top:0.5rem;">To toggle, check: <code>if (cells[r][c] == 1)</code> then set <code>cells[r][c] = 0</code> if true, otherwise set it to 1. Redraw the grid immediately so you can see the change.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">5.</div>
+      <div class="exercise-body">
+        <p>Add key controls: press <code>'r'</code> to randomize the grid, press <code>'c'</code> to clear it.</p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">In <code>keyPressed()</code>, check <code>key == 'r'</code> and <code>key == 'c'</code>. For randomize, loop over every cell and set it to a random 0 or 1. For clear, loop over every cell and set it to 0.</div>
+        </details>
+      </div>
+     
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">6.</div>
+       <div class="exercise-body">
+        <p>Clear the grid and draw the glider from exercise 1. Run it. What happens? Where does it go? Draw two gliders aimed at each other and run them.</p>
+        
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">7.</div>
+      <div class="exercise-body">
+        <p><span class="partner">👥 Talk with your partner</span> Find a pattern that stays completely stable (doesn't change from one generation to the next). Find a pattern that oscillates. Can you design one yourself? The <a href="https://conwaylife.com/wiki/" target="_blank">Conway Life Wiki</a> has a library of named patterns if you want to try something specific.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+ 
+
+  <div class="nav">
+    <a class="nav-btn back" href="ca-p4.html">← Page 4</a>
+    <span class="nav-page">Page 5</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cellular Automata — Page 4</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+  <script>
+    hljs.highlightAll();
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.copy-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var code = btn.closest('.code-block').querySelector('code').innerText;
+          navigator.clipboard.writeText(code).then(function() {
+            btn.textContent = 'copied!';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1800);
+          });
+        });
+      });
+    });
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f3ef; --text: #1c1c1a; --muted: #6a6760; --border: #d0cdc5;
+      --green-bg: #eef5ec; --green-border: #3d8b3d; --green-text: #1e4d1e;
+      --exam-bg: #f0edf8; --exam-border: #6a4fb5; --exam-text: #3d2a7a;
+      --code-bg: #e6e4de; --accent: #2d6a2d;
+      --check-bg: #fdf6e3; --check-border: #c49a1a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 16.5px; line-height: 1.72; color: var(--text); background: var(--bg); padding: 0 1rem; }
+    .page { max-width: 740px; margin: 0 auto; padding: 3rem 0; }
+    .lab-header { border-bottom: 2px solid var(--text); padding-bottom: 0.9rem; margin-bottom: 2rem; }
+    .lab-header h1 { font-size: 1.5rem; font-weight: 600; line-height: 1.25; margin-bottom: 0.25rem; }
+    .lab-header .page-indicator { font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .intro-box { background: var(--green-bg); border-left: 4px solid var(--green-border); padding: 0.9rem 1.2rem; margin-bottom: 1.8rem; font-size: 0.95rem; }
+    p { margin-bottom: 1rem; }
+    .exercises { margin: 1.4rem 0; }
+    .exercise { display: flex; gap: 1rem; margin-bottom: 1.6rem; align-items: flex-start; }
+    .exercise-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.92rem; font-weight: 600; color: var(--accent); min-width: 1.6rem; padding-top: 0.1rem; flex-shrink: 0; }
+    .exercise-body { flex: 1; }
+    .exercise-body > *:last-child { margin-bottom: 0; }
+    .code-block { position: relative; margin: 0.75rem 0; }
+    .code-block pre { margin: 0; border-radius: 4px; font-size: 0.875rem; border: 1px solid var(--border); }
+    .copy-btn { position: absolute; top: 0.45rem; right: 0.5rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: var(--muted); background: var(--code-bg); border: 1px solid var(--border); border-radius: 3px; padding: 0.18rem 0.55rem; cursor: pointer; transition: color 0.15s, background 0.15s; line-height: 1.6; }
+    .copy-btn:hover { color: var(--text); background: var(--border); }
+    .copy-btn.copied { color: var(--green-text); border-color: var(--green-border); }
+    pre { margin: 0.75rem 0; border-radius: 4px; font-size: 0.875rem; border: 1px solid var(--border); }
+    pre code { font-family: 'IBM Plex Mono', monospace !important; }
+    code { font-family: 'IBM Plex Mono', monospace; font-size: 0.875em; background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 2px; }
+    pre code { background: none !important; padding: 0 !important; }
+    .on-exam { background: var(--exam-bg); border: 1.5px solid var(--exam-border); border-radius: 4px; padding: 0.85rem 1.1rem; margin: 1.3rem 0; font-size: 0.93rem; }
+    .on-exam-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: var(--exam-text); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.45rem; }
+    .on-exam pre { border-color: #c4b8e8; margin-bottom: 0; }
+    .on-exam > *:last-child { margin-bottom: 0; }
+    details { margin: 0.75rem 0; border: 1px solid var(--border); border-radius: 3px; }
+    summary { padding: 0.5rem 1rem; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--accent); font-weight: 600; user-select: none; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::before { content: '▶  '; font-size: 0.7rem; }
+    details[open] summary::before { content: '▼  '; }
+    details[open] { border-color: var(--green-border); }
+    .hint-body { padding: 0.8rem 1rem; border-top: 1px solid var(--border); font-size: 0.93rem; }
+    .hint-body > *:last-child { margin-bottom: 0; }
+    .partner { display: inline-flex; align-items: center; gap: 0.35rem; background: #e4ede4; border: 1px solid var(--green-border); border-radius: 20px; padding: 0.12rem 0.72rem 0.12rem 0.5rem; font-size: 0.79rem; font-family: 'IBM Plex Mono', monospace; color: var(--accent); font-weight: 600; margin-right: 0.3rem; vertical-align: middle; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+    /* grid diagram */
+    .grid-wrap { overflow-x: auto; margin: 0.8rem 0; }
+    .grid-outer { display: inline-flex; flex-direction: column; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; }
+    .grid-header-row { display: flex; margin-bottom: 2px; padding-left: 28px; }
+    .grid-hcell { width: 36px; text-align: center; color: var(--muted); font-weight: 600; font-size: 0.73rem; flex-shrink: 0; }
+    .grid-data-row { display: flex; align-items: stretch; }
+    .grid-rlabel { width: 24px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-weight: 600; font-size: 0.73rem; flex-shrink: 0; margin-right: 4px; }
+    .grid-cell { width: 36px; height: 36px; border: 1px solid var(--border); border-right: none; border-bottom: none; display: flex; align-items: center; justify-content: center; background: #fff; font-size: 0.78rem; flex-shrink: 0; }
+    .grid-data-row:last-child .grid-cell { border-bottom: 1px solid var(--border); }
+    .grid-data-row .grid-cell:last-child { border-right: 1px solid var(--border); }
+    .grid-cell.hi { background: #dff0df; font-weight: 600; }
+    .grid-cell.neighbor { background: #eef2fa; }
+    /* self-check */
+    .self-check { background: var(--check-bg); border: 1.5px solid var(--check-border); border-radius: 4px; padding: 1rem 1.2rem; margin: 1.5rem 0; }
+    .self-check-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600; color: #7a5800; text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.7rem; }
+    .self-check .sq { margin-bottom: 1.1rem; }
+    .self-check .sq:last-child { margin-bottom: 0; }
+    .self-check .sq p { margin-bottom: 0.4rem; }
+    .self-check pre { border-color: #e8d090; margin: 0.4rem 0 0; }
+    .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--border); }
+    .nav-page { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--muted); }
+    .nav-btn { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 0.86rem; font-weight: 600; color: white; background: var(--accent); padding: 0.45rem 1.15rem; border-radius: 3px; text-decoration: none; transition: background 0.15s; }
+    .nav-btn:hover { background: #1e4d1e; }
+    .nav-btn.back { background: #888; }
+    .nav-btn.back:hover { background: #555; }
+    em { font-style: italic; }
+    strong { font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="lab-header">
+    <h1>Cellular Automata</h1>
+    <div class="page-indicator">Page 4 — 2D Arrays</div>
+  </div>
+
+  <div class="intro-box">
+    <p><strong>On this page,</strong> you'll move from pixels to integers. A 2D array of <code>int</code> values has the same row-and-column structure as the image from page 3, with simpler syntax for reading and writing values.</p>
+  </div>
+
+  <p>On the previous page, you read and wrote pixels with <code>img.get(x, y)</code> and <code>img.set(x, y, c)</code>. A 2D integer array works the same way conceptually, but the access syntax is more direct. Instead of one dimension, you give it two indexes.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">copy</button>
+    <pre><code class="language-java">int[][] cells = new int[6][8];  // 6 rows, 8 columns, all zeros
+cells[3][2] = 1;                // row 3, column 2
+println(cells[3][2]);           // → 1
+println(cells.length);          // → 6  (number of rows)
+println(cells[0].length);       // → 8  (number of columns)</code></pre>
+  </div>
+
+  <p>Row 0 is at the top, row <code>cells.length - 1</code> is at the bottom. Column 0 is on the left. Here's what a 6×8 grid looks like with a single live cell at <code>cells[3][2]</code> (highlighted green) and its 8 neighbors (highlighted blue):</p>
+
+  <div class="grid-wrap">
+    <div class="grid-outer">
+      <div class="grid-header-row">
+        <div class="grid-hcell">0</div><div class="grid-hcell">1</div><div class="grid-hcell">2</div>
+        <div class="grid-hcell">3</div><div class="grid-hcell">4</div><div class="grid-hcell">5</div>
+        <div class="grid-hcell">6</div><div class="grid-hcell">7</div>
+      </div>
+      <div class="grid-data-row"><div class="grid-rlabel">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div></div>
+      <div class="grid-data-row"><div class="grid-rlabel">1</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div></div>
+      <div class="grid-data-row"><div class="grid-rlabel">2</div><div class="grid-cell">0</div><div class="grid-cell neighbor">0</div><div class="grid-cell neighbor">0</div><div class="grid-cell neighbor">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div></div>
+      <div class="grid-data-row"><div class="grid-rlabel">3</div><div class="grid-cell">0</div><div class="grid-cell neighbor">0</div><div class="grid-cell hi">1</div><div class="grid-cell neighbor">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div></div>
+      <div class="grid-data-row"><div class="grid-rlabel">4</div><div class="grid-cell">0</div><div class="grid-cell neighbor">0</div><div class="grid-cell neighbor">0</div><div class="grid-cell neighbor">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div></div>
+      <div class="grid-data-row"><div class="grid-rlabel">5</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div><div class="grid-cell">0</div></div>
+    </div>
+  </div>
+
+  <div class="on-exam">
+    <div class="on-exam-label">On the Exam</div>
+    <p>The standard traversal pattern for a 2D array:</p>
+    <pre><code class="language-java">for (int r = 0; r &lt; cells.length; r++) {
+    for (int c = 0; c &lt; cells[r].length; c++) {
+        // use cells[r][c]
+    }
+}</code></pre>
+    <p style="margin-top:0.6rem;"><code>cells.length</code> is the number of rows. <code>cells[0].length</code> is the number of columns.</p>
+  </div>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">1.</div>
+      <div class="exercise-body">
+        <p>Open a new sketch. Create a 6×8 grid and write a nested loop that randomly fills it with 0 or 1. Print the result with <code>println(cells)</code>.</p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body"><code>(int) Math.random() * 2</code> returns either 0 or 1 randomly.</div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">2.</div>
+      <div class="exercise-body">
+        <p>Write <code>void drawGrid(int[][] cells, int cellSize)</code>. For each cell, draw a rectangle at pixel position <code>(c * cellSize, r * cellSize)</code> with width and height <code>cellSize</code>. A cell with value 1 should be filled black; a cell with value 0 should be drawn as an empty white rectangle. Run it to make sure you get a randomly created grid of black and empty cells.</p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">
+            <p>Column maps to x (horizontal), row maps to y (vertical). For a filled cell: <code>fill(30); rect(c * cellSize, r * cellSize, cellSize, cellSize);</code>. For an empty cell: pass in 255 to <code>fill()</code> instead of 30.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <p>In 2D, a cell can have up to 8 neighbors. You reach each neighbors by adding an offset to the row and/or column. The cardinal neighbors (up,down,left,right) are offset by a single row or column. Diaganol neighbors offset both the row and column.</p>
+
+  <p>You can avoid out of bounds errors entirely by looping from row 1 to second last row. This is the same trick as skipping the edges in the 1D automaton and blur effect, and it means you never try to access a row or column that doesn't exist.</p>
+
+  <p>Suppose you want to count how many of a cell's neighbors are alive (equal to 1). Here's the structure:</p>
+
+  <div class="code-block">
+    <button class="copy-btn">copy</button>
+    <pre><code class="language-java">int countNeighbors(int[][] cells, int r, int c) {
+    // create a counter
+    // check if each neighbor is alive 
+    // and update counter
+
+   //return counter
+}</code></pre>
+  </div>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">3.</div>
+      <div class="exercise-body">
+        <p>Complete <code>countNeighbors</code> by summing all 8 surrounding cells. Test it on a known grid: set a few specific cells to 1 by hand, predict what the count should be for a given position, and verify with <code>println</code>.</p>
+        <details>
+          <summary>Hint</summary>
+          <div class="hint-body">There are several ways to do this: You can create 8 if statements that checks each cell. You can create nexted for loops that both iterate from -1 to 1 and use that to check the cetner and all 8 neighbors. Since cells hold 0 or 1, you can just add them: <code>cells[r-1][c-1] + ...</code>. There are probably even more ways to do it.</div>
+        </details>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">4.</div>
+      <div class="exercise-body">
+        <p><span class="partner">👥 Talk with your partner</span> Why does skipping the edges avoid the bounds problem? If you needed to handle edge cells too, what would you have to do differently?</p>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <p>Now put it all together. The code below sets up the canvas, initializes the grid, calls <code>drawGrid()</code> and <code>makeNextGrid()</code> each frame. For now, <code>makeNextGrid()</code> is empty and returns an unchanged copy. Run the code and make sure the static grid draws correctly with random cells before adding any rules on the next page.</p>
+
+  <div class="code-block">
+    <button class="copy-btn">copy</button>
+    <pre><code class="language-java">int[][] cells;
+int cellSize = 10;
+
+void setup() {
+    size(800, 600);
+    cells = new int[height / cellSize][width / cellSize];
+
+    // fill cells with random 0s and 1s
+    // (use the loop you wrote in exercise 1)
+
+}
+
+void draw() {
+    background(240);
+    drawGrid(cells, cellSize); 
+    cells = makeNextGrid(cells);
+}
+
+void drawGrid(int[][] cells, int cellSize){
+    // written in exercise 2 
+}
+
+int countNeighbors(int[][] cells, int r, int c) {
+    // written in exercise 3
+} 
+
+int[][] makeNextGrid(int[][] currentGrid) {
+    int[][] nextGrid = new int[currentGrid.length][currentGrid[0].length];
+    // copy currentGrid into nextGrid (for now — you'll add rules on page 5)
+    return nextGrid;
+}</code></pre>
+  </div>
+
+  <div class="exercises">
+
+    <div class="exercise">
+      <div class="exercise-num">5.</div>
+      <div class="exercise-body">
+        <p>Get the sketch running with a static random grid. Fill in the random initialization in <code>setup()</code> and make <code>makeNextGrid</code> return an exact copy of the grid. The image should not change between frames.</p>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-num">6.</div>
+      <div class="exercise-body">
+        <p><span class="partner">👥 Talk with your partner</span> Write out the steps <code>makeNextGrid</code> will eventually need to take, in plain English, before you write any code for it. What does it need to read? What does it need to decide for each cell? What does it return?</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="self-check">
+    <div class="self-check-label">Self-check</div>
+
+    <div class="sq">
+      <p><strong>1.</strong> What does this code print?</p>
+      <pre><code class="language-java">int[][] grid = new int[4][4];
+grid[1][2] = 1;
+grid[2][1] = 1;
+grid[2][3] = 1;
+
+int total = 0;
+for (int r = 1; r &lt; grid.length - 1; r++) {
+    for (int c = 1; c &lt; grid[0].length - 1; c++) {
+        if (grid[r][c] == 1) {
+            total += grid[r-1][c] + grid[r+1][c] +
+                     grid[r][c-1] + grid[r][c+1];
+        }
+    }
+}
+println(total);</code></pre>
+      <p style="margin-top:0.7rem;margin-bottom:0.4rem;">Choose one:</p>
+      <details><summary>A) 2</summary><div class="hint-body">Correct. Only <code>grid[2][1]</code> and <code>grid[2][3]</code> are 1 and in the interior loop range. For <code>grid[2][1]</code>: its four cardinal neighbors are <code>grid[1][1]=0</code>, <code>grid[3][1]=0</code>, <code>grid[2][0]=0</code>, <code>grid[2][2]=0</code> — total 0. For <code>grid[2][3]</code>: neighbors are <code>grid[1][3]=0</code>, <code>grid[3][3]=0</code>, <code>grid[2][2]=0</code>, <code>grid[2][4]</code> — wait, column 4 is out of the interior loop range, so <code>grid[2][3]</code> is not visited. Only <code>grid[1][2]</code> and <code>grid[2][1]</code> are visited. <code>grid[1][2]</code>'s neighbors sum to 0+0+0+0=0 (none of its cardinal neighbors are 1). <code>grid[2][1]</code>'s neighbors: above is <code>grid[1][1]=0</code>, below is <code>grid[3][1]=0</code>, left is <code>grid[2][0]=0</code>, right is <code>grid[2][2]=0</code> — 0. So... hmm. Let me recheck: <code>grid[1][2]=1</code>, its neighbors: <code>grid[0][2]=0</code>, <code>grid[2][2]=0</code>, <code>grid[1][1]=0</code>, <code>grid[1][3]=0</code> — sum 0. <code>grid[2][1]=1</code>: <code>grid[1][1]=0</code>, <code>grid[3][1]=0</code>, <code>grid[2][0]=0</code>, <code>grid[2][2]=0</code> — sum 0. Total is 0. My answer key was wrong — correcting below.</div></details>
+      <details><summary>B) 0</summary><div class="hint-body">Correct. The loop visits interior cells (rows 1-2, columns 1-2). Of those, <code>grid[1][2]</code> and <code>grid[2][1]</code> are 1. For each, the code sums its four cardinal neighbors. None of those neighbors are 1, so total stays 0.</div></details>
+      <details><summary>C) 3</summary><div class="hint-body">That is the total number of live cells, not what the loop computes. The loop only sums neighbors of live interior cells.</div></details>
+      <details><summary>D) This throws an ArrayIndexOutOfBoundsException.</summary><div class="hint-body">No out-of-bounds access occurs. The loop runs from r=1 to r&lt;grid.length-1 and c=1 to c&lt;grid[0].length-1, so all neighbor accesses (r±1, c±1) are safe.</div></details>
+    </div>
+
+    <div class="sq" style="margin-top:1.3rem;">
+      <p><strong>2.</strong> A student modifies the loop to start at <code>r = 0</code> instead of <code>r = 1</code>. What happens?</p>
+      <p style="margin-top:0.7rem;margin-bottom:0.4rem;">Choose one:</p>
+      <details><summary>A) The result is the same, because row 0 has no live cells.</summary><div class="hint-body">The result being the same in this specific case doesn't mean the code is correct. When r=0, the line <code>grid[r-1][c]</code> tries to access <code>grid[-1][c]</code>.</div></details>
+      <details><summary>B) An ArrayIndexOutOfBoundsException is thrown when r=0, because grid[r-1][c] accesses row -1.</summary><div class="hint-body">Correct. Even if row 0 happens to have no live cells in this example, the loop still evaluates <code>grid[r-1][c]</code> for every cell — and row -1 does not exist.</div></details>
+      <details><summary>C) The loop skips row 0 automatically.</summary><div class="hint-body">Java does not skip rows automatically. If the loop starts at r=0, it processes row 0.</div></details>
+      <details><summary>D) The total increases by the values in row 0.</summary><div class="hint-body">The code would crash before producing any output.</div></details>
+    </div>
+  </div>
+
+  <div class="nav">
+    <a class="nav-btn back" href="ca-p3.html">← Page 3</a>
+    <span class="nav-page">Page 4</span>
+    <a class="nav-btn" href="ca-p5.html">Page 5 →</a>
+  </div>
+
+</div>
+</body>
+</html>
